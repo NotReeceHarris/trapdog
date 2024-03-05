@@ -9,6 +9,7 @@ app.use(express.json());
 
 app.use(trapdog({
   verbose: true,
+  sqlite: 'test.db',
 }));
 
 app.get('/', (req, res) => {
