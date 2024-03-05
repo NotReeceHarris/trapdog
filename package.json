@@ -13,6 +13,11 @@
     "type": "git",
     "url": "git+https://github.com/NotReeceHarris/trapdog.git"
   },
+  "dependencies": {
+    "semver": "^7.6.0",
+    "sqlite3": "^5.1.7",
+    "xss-attack-detection": "^1.0.4"
+  },
   "scripts": {
     "build:watch": "npm run build:js -- --watch",
     "build:js": "babel src/ --out-dir dist --extensions \".ts,.tsx\" --no-comments",
@@ -55,12 +60,5 @@
     "express",
     "koa",
     "nestjs"
-  ],
-  "dependencies": {
-    "bayes-classifier": "^0.0.5",
-    "body-parser": "^1.20.2",
-    "semver": "^7.6.0",
-    "sqlite3": "^5.1.7",
-    "xss-attack-detection": "^1.0.4"
-  }
+  ]
 }
