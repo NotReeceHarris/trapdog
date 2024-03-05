@@ -4,7 +4,9 @@ const trapdog = require('../dist/index');
 const app = express();
 const port = 3000;
 
-app.use(trapdog({}));
+app.use(trapdog({
+  verbose: true,
+}));
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
