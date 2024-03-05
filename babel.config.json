@@ -3,12 +3,12 @@
         [
             "@babel/preset-typescript"
         ],
-        /* [
+        [
             "minify",
             {
                 "deadcode": false // fixes removing of ordered callback arguments
             }
-        ], */
+        ],
         [
             "@babel/preset-env",
             {

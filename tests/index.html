@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Trapdog test</title>
+    </head>
+
+    <style>
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+
+    <body>
+        <button id="json">Send JSON</button>
+        <button id="xss">Send XSS</button>
+        <button id="sqli">Send SQLI</button>
+    </body>
+
+    <script>
+        document.getElementById('json').addEventListener('click', function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({json: "Hello, world!"}));
+        });
+
+        document.getElementById('xss').addEventListener('click', function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({xss: "<script>alert(\"XSS\")<\/script>"}));
+        });
+
+        document.getElementById('sqli').addEventListener('click', function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/?search=test"-- SELECT * FROM users', true);
+            xhr.send();
+        });
+    </script>
+
+</html>
