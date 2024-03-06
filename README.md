@@ -40,6 +40,10 @@ app.listen(port, () => {
 ```
 
 ## Configuration
+
+> [!WARNING]
+> Misconfiguring Trapdog can create security vulnerabilities in your web application and potentially disrupt its functionality. It's essential to properly configure Trapdog to avoid these risks and maintain the integrity of your application.
+
 ```js
 {
     "block": boolean, // Default: true
