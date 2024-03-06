@@ -38,3 +38,15 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
 ```
+
+## Configuration
+```js
+{
+    "block": boolean, // Default: true
+    "xss_confidence": number, // Default: 80
+    "fingerprint": boolean, // Default: true
+    "verbose": boolean, // Default: false
+    "verbose:emoji": boolean, // Default: true
+    "sqlite": string // Default: ":memory:"
+}
+```
