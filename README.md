@@ -4,7 +4,9 @@
 
 <h1 align="center">🪤 TrapDog</h1>
 
-Automatically detects, logs, and tracks potential attacks, empowering you to swiftly block and trace attack vectors for enhanced security of your NodeJS web-app.
+<p>Automatically detect attacks towards your Express web application by implementing robust security measures. Utilize intrusion detection systems (IDS) and web application firewalls (WAF) to monitor incoming traffic for suspicious patterns and behaviors. Log all detected attacks, including details such as the source IP address, request payload, and timestamps.</p>
+
+<p>Additionally, implement fingerprinting techniques to gather information about the attacker, such as their user-agent string, IP reputation, and behavior history. This information can be invaluable for identifying repeat offenders and implementing targeted mitigation strategies.</p>
 
 <br>
 
