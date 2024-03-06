@@ -54,3 +54,17 @@ app.listen(port, () => {
     "sqlite": string // Default: ":memory:"
 }
 ```
+
+## Features
+
+- ✅ SQL Injection Detection
+- ✅ XSS/CSS Detection
+- ✅ Request Blocking
+- ✅ Logging
+- ⏳ Analytics
+- ⏳ Fingerprinting
+
+> [!NOTE]
+> ✅ - Added \
+> ❌ - Not added yet \
+> ⏳ - In-Progress 
