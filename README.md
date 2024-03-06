@@ -67,4 +67,4 @@ app.listen(port, () => {
 > [!NOTE]
 > ✅ - Added \
 > ❌ - Not added yet \
-> ⏳ - In-Progress 
+> ⏳ - Next release
