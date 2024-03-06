@@ -49,6 +49,7 @@ let bodyparserDetected = true;
 export default (config: Config) => {
 
     config = {
+        "block": true,
         "xss_confidence": 80,
         "fingerprint": true,
         "verbose": false,
@@ -69,11 +70,10 @@ export default (config: Config) => {
     (async () => {
         const latestVersion = await getLatestVersion();
         if (semver.lt(version, latestVersion)) {
-            log(`${colours.yellow}A new version of trapdog is available. Run 'npm i trapdog' to update.${colours.reset}`, emojis.dog);
+            log(`${colours.yellow}A new version of trapdog is available. Run 'npm i trapdog@${latestVersion}' to update.${colours.reset}`, emojis.dog);
         }
+        log(`Initialised trapdog v${version}`, emojis.dog);
     })()
-
-    log(`Initialised trapdog v${version}`, emojis.dog);
 
     return (req: any, res: any, next?: any) => {
         if (!bodyparserDetected) {
@@ -101,17 +101,23 @@ export default (config: Config) => {
                 if (classification.gist === 'malicious' && classification.confidenceFactor >= config.xss_confidence) {
                     logger.logAttack('xss', ip)
                     log('XSS attack detected', emojis.poop);
-                    return res.status(403).send('Forbidden');
+
+                    if (config.block) {
+                        return res.status(403).send('Forbidden');
+                    }
                 }
             }
         }
 
-        // SQLi detection
+        // SQLI detection
         const sqliDetected = sqliDetection(url);
         if (sqliDetected) {
             logger.logAttack('sqli', ip)
             log('SQLi attack detected', emojis.poop);
-            return res.status(403).send('Forbidden');
+
+            if (config.block) {
+                return res.status(403).send('Forbidden');
+            }
         }
 
         return next();

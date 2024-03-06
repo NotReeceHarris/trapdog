@@ -1,4 +1,5 @@
 export interface Config {
+    "block": boolean,
     "xss_confidence": number,
     "fingerprint": boolean,
     "verbose": boolean,
