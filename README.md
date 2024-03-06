@@ -8,8 +8,6 @@
 
 <p>Additionally, implement fingerprinting techniques to gather information about the attacker, such as their user-agent string, IP reputation, and behavior history. This information can be invaluable for identifying repeat offenders and implementing targeted mitigation strategies.</p>
 
-<br>
-
 
 ## Installation
 ```
