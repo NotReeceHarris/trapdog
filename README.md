@@ -57,14 +57,15 @@ app.listen(port, () => {
 
 ## Features
 
+> [!NOTE]
+> ✅ - Added \
+> ❌ - Not added yet \
+> ⏳ - Next release
+
+
 - ✅ SQL Injection Detection
 - ✅ XSS/CSS Detection
 - ✅ Request Blocking
 - ✅ Logging
 - ⏳ Analytics
 - ⏳ Fingerprinting
-
-> [!NOTE]
-> ✅ - Added \
-> ❌ - Not added yet \
-> ⏳ - Next release
