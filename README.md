@@ -1,8 +1,4 @@
-<p align="center">
-    <img src="assets/logo_text.png" width="1000px">
-</p>
-
-<h1 align="center">🪤 TrapDog</h1>
+# ![Trapdog](assets/logo_text.png)
 
 <p>Automatically detect attacks towards your Express web application by implementing robust security measures. Utilize intrusion detection systems (IDS) and web application firewalls (WAF) to monitor incoming traffic for suspicious patterns and behaviors. Log all detected attacks, including details such as the source IP address, request payload, and timestamps.</p>
 
