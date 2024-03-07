@@ -1,4 +1,4 @@
-# ![Trapdog](assets/logo_text.png)
+# ![Trapdog](assets/logo.png)
 
 <p>Automatically detect attacks towards your Express web application by implementing robust security measures. Utilize intrusion detection systems (IDS) and web application firewalls (WAF) to monitor incoming traffic for suspicious patterns and behaviors. Log all detected attacks, including details such as the source IP address, request payload, and timestamps.</p>
 
