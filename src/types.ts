@@ -4,5 +4,6 @@ export interface Config {
     "fingerprint": boolean,
     "verbose": boolean,
     "verbose:emoji": boolean,
-    "sqlite": string
+    "sqlite": string,
+    "hidden": boolean
 }

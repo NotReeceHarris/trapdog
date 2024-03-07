@@ -14,7 +14,13 @@
 npm install trapdog@latest
 ```
 
-## Usage
+## Setup / Usage
+
+To integrate trapdog with your Express site, simply follow this straightforward example. Ensure that you initialize trapdog after parsing the request body.
+
+> [!NOTE]
+> If you intend to utilise the trapdog analyzer, it's essential to utilise a file for your SQLite configuration rather than relying on `:memory:`.
+
 ```js
 const express = require('express');
 const trapdog = require('trapdog');
@@ -22,20 +28,23 @@ const trapdog = require('trapdog');
 const app = express();
 const port = 3001;
 
-// Make sure to parse body before using trapdog
+// Parse the request body before using trapdog
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Initialize trapdog middleware with your configurations
 app.use(trapdog({
-    // Your configs
+    // Your trapdog configurations here
 }));
 
+// Define your routes
 app.get('/', (req, res) => {
-  res.send('Hello, WOrld!');
+  res.send('Hello, World!');
 });
 
+// Start the server
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Server is running at http://localhost:${port}`);
 });
 ```
 
@@ -54,6 +63,14 @@ app.listen(port, () => {
     "sqlite": string // Default: ":memory:"
 }
 ```
+
+## List of Modules
+
+- Cross site scripting (XSS) [owasp.org ↗](https://owasp.org/www-community/attacks/xss/)
+- Sql Injection (SQLI) [owasp.org ↗](https://owasp.org/www-community/attacks/SQL_Injection)
+- Local File Inclusion (LFI) [owasp.org ↗](https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_Local_File_Inclusion)
+
+<!--
 
 ## Features
 

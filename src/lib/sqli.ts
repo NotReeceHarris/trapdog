@@ -1,4 +1,5 @@
-// sql regex reference: http://www.symantec.com/connect/articles/detection-sql-injection-and-cross-site-scripting-attacks
+// http://www.symantec.com/connect/articles/detection-sql-injection-and-cross-site-scripting-attacks
+// https://owasp.org/www-community/attacks/SQL_Injection
 
 export default function (value) {
 

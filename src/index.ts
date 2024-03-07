@@ -9,6 +9,7 @@ import { colours, emojis } from './constants';
 
 import attackDetection from 'xss-attack-detection';
 import sqliDetection from './lib/sqli';
+import lfiDetection from './lib/lfi';
 
 const getLatestVersion = async () => {
     const response = await fetch('https://registry.npmjs.org/trapdog/latest');
@@ -55,6 +56,7 @@ export default (config: Config) => {
         "verbose": false,
         "verbose:emoji": true,
         "sqlite": ":memory:",
+        "hidden": false,
         ...config
     }
 
@@ -76,26 +78,23 @@ export default (config: Config) => {
     })()
 
     return (req: any, res: any, next?: any) => {
-        if (!bodyparserDetected) {
+        if (!bodyparserDetected || !req.body) {
+            if (!req.body && bodyparserDetected) {
+                log(`No body detected, please use body-parser or similar middleware. (${colours.red}trapdog disabled${colours.reset})`, emojis.poop);
+                bodyparserDetected = false;
+            }
             return next();
         }
 
-        if (!req.body) {
-            log(`No body detected, please use body-parser or similar middleware. (${colours.red}trapdog disabled${colours.reset})`, emojis.poop);
-            bodyparserDetected = false;
-            return next();
-        }
-
-        const method = req.method;
         const url = req.originalUrl;
         const ip = req.ip || req.connection.remoteAddress;
 
-        const payload = Object.entries(req.body).flat()
+        const body = Object.entries(req.body).flat()
         const xss_detect = new attackDetection.xssAttackDetection();
 
         // XSS detection
-        if (payload.length) {
-            const xss_classified = xss_detect.classifyBatch(payload)
+        if (body.length) {
+            const xss_classified = xss_detect.classifyBatch(body)
             for (let i = 0; i < xss_classified.length; i++) {
                 const classification = xss_classified[i];
                 if (classification.gist === 'malicious' && classification.confidenceFactor >= config.xss_confidence) {
@@ -103,6 +102,7 @@ export default (config: Config) => {
                     log('XSS attack detected', emojis.poop);
 
                     if (config.block) {
+                        if (!config.hidden) res.setHeader('blocked-by', 'trapdog');
                         return res.status(403).send('Forbidden');
                     }
                 }
@@ -110,12 +110,27 @@ export default (config: Config) => {
         }
 
         // SQLI detection
-        const sqliDetected = sqliDetection(url);
-        if (sqliDetected) {
+        const sqliUrlDetected = sqliDetection(url);
+        const sqliBodyDetected = body.some(arg => sqliDetection(arg));
+        if (sqliUrlDetected || sqliBodyDetected) {
             logger.logAttack('sqli', ip)
             log('SQLi attack detected', emojis.poop);
 
             if (config.block) {
+                if (!config.hidden) res.setHeader('blocked-by', 'trapdog');
+                return res.status(403).send('Forbidden');
+            }
+        }
+
+        // LFI detection
+        const lfiUrlDetected = lfiDetection(url);
+        const lfiBodyDetected = body.some(arg => lfiDetection(arg));
+        if (lfiUrlDetected || lfiBodyDetected) {
+            logger.logAttack('lfi', ip)
+            log('LFI attack detected', emojis.poop);
+
+            if (config.block) {
+                if (!config.hidden) res.setHeader('blocked-by', 'trapdog');
                 return res.status(403).send('Forbidden');
             }
         }
