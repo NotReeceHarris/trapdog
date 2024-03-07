@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="assets/logo_3.png" width="200px">
+    <img src="assets/logo_text.png" width="1000px">
 </p>
 
 <h1 align="center">🪤 TrapDog</h1>

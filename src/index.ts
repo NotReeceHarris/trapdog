@@ -34,13 +34,7 @@ class Logger {
 const initDatabase = (config) => {
     const db = new sqlite3.Database(config.sqlite);
     db.serialize(() => {
-        db.run(`
-        CREATE TABLE IF NOT EXISTS attacks (
-            id INTEGER PRIMARY KEY, 
-            attack TEXT, 
-            ip TEXT, 
-            datetime TEXT
-        )`);
+        db.run('CREATE TABLE IF NOT EXISTS attacks (id INTEGER PRIMARY KEY, attack TEXT, ip TEXT, datetime TEXT)');
     });
     return db;
 }
