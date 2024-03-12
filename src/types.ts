@@ -9,6 +9,7 @@ export interface Config {
     "regex": {
         "name": string,
         "regex": string,
+        "flag": string,
         "description": string
     }[]
 }
