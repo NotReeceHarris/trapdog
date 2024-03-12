@@ -55,7 +55,7 @@ export default (config: Config) => {
         log(`Initialised trapdog v${version}`, emojis.dog);
     })()
     
-    function handleMissingBody(req: any, next: any) {
+    function handleMissingBody(req: any) {
         if (!req.body && bodyparserDetected) {
             log(`No body detected, please use body-parser or similar middleware. (${colours.red}detection on body data disabled${colours.reset})`, emojis.bone);
             bodyparserDetected = false;
