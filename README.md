@@ -1,4 +1,5 @@
-# ![Trapdog](assets/logo.png)
+# ![Trapdog](assets/logo.png) ![NPM Version](https://img.shields.io/npm/v/trapdog?style=flat-square) ![NPM License](https://img.shields.io/npm/l/trapdog?style=flat-square) ![NPM Downloads](https://img.shields.io/npm/dw/trapdog?style=flat-square) ![GitHub Release](https://img.shields.io/github/v/release/notreeceharris/trapdog?style=flat-square) ![Codacy grade](https://img.shields.io/codacy/grade/6e2476638d574fd9898d8198acda6d3e?style=flat-square)
+
 
 <p>Automatically detect attacks towards your Express web application by implementing robust security measures. Utilize intrusion detection systems (IDS) and web application firewalls (WAF) to monitor incoming traffic for suspicious patterns and behaviors. Log all detected attacks, including details such as the source IP address, request payload, and timestamps.</p>
 
