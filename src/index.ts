@@ -5,11 +5,12 @@ const sqlite3 = require('sqlite3').verbose();
 
 import { version } from '../package.json';
 import { Config } from './types';
-import { colours, emojis } from './constants';
+import { colours, emojis, regex } from './constants';
 
 import attackDetection from 'xss-attack-detection';
 import sqliDetection from './lib/sqli';
 import lfiDetection from './lib/lfi';
+import regexDetection from './lib/regex';
 
 const getLatestVersion = async () => {
     const response = await fetch('https://registry.npmjs.org/trapdog/latest');
@@ -53,6 +54,11 @@ export default (config: Config) => {
         "hidden": false,
         ...config
     }
+
+    config.regex = [
+        ...regex,
+        ...config.regex
+    ]
 
     const db = initDatabase(config);
     const logger = new Logger(db);
@@ -105,7 +111,7 @@ export default (config: Config) => {
 
         // SQLI detection
         const sqliUrlDetected = sqliDetection(url);
-        const sqliBodyDetected = body.some(arg => sqliDetection(arg));
+        const sqliBodyDetected = body.some(arg => sqliDetection(arg.toString()));
         if (sqliUrlDetected || sqliBodyDetected) {
             logger.logAttack('sqli', ip)
             log('SQLi attack detected', emojis.poop);
@@ -118,7 +124,7 @@ export default (config: Config) => {
 
         // LFI detection
         const lfiUrlDetected = lfiDetection(url);
-        const lfiBodyDetected = body.some(arg => lfiDetection(arg));
+        const lfiBodyDetected = body.some(arg => lfiDetection(arg.toString()));
         if (lfiUrlDetected || lfiBodyDetected) {
             logger.logAttack('lfi', ip)
             log('LFI attack detected', emojis.poop);
@@ -126,6 +132,23 @@ export default (config: Config) => {
             if (config.block) {
                 if (!config.hidden) res.setHeader('blocked-by', 'trapdog');
                 return res.status(403).send('Forbidden');
+            }
+        }
+
+        // Regex detection
+        const regexUrlDetected = regexDetection(url, config);
+        const regexBodyDetected = body.map(arg => regexDetection(arg.toString(), config)).filter(arg => arg.pass)[0] as {pass:boolean, check:string};
+        if (!regexUrlDetected.pass || regexBodyDetected) {
+            const regex = regexUrlDetected.pass ? regexUrlDetected : regexBodyDetected;
+
+            if (!regex.pass) {
+                logger.logAttack(regex.check, ip)
+                log(`${regex.check} attack detected`, emojis.poop);
+
+                if (config.block) {
+                    if (!config.hidden) res.setHeader('blocked-by', 'trapdog');
+                    return res.status(403).send('Forbidden');
+                }
             }
         }
 

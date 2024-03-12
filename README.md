@@ -51,12 +51,13 @@ app.listen(port, () => {
 
 ```js
 {
-    "block": boolean, // Default: true
+    "block": boolean,         // Default: true
     "xss_confidence": number, // Default: 80
-    "fingerprint": boolean, // Default: true
-    "verbose": boolean, // Default: false
+    "fingerprint": boolean,   // Default: true
+    "verbose": boolean,       // Default: false
     "verbose:emoji": boolean, // Default: true
-    "sqlite": string // Default: ":memory:"
+    "sqlite": string,         // Default: ":memory:"
+    "hidden": boolean         // Default: false
 }
 ```
 
@@ -65,6 +66,8 @@ app.listen(port, () => {
 - Cross site scripting (XSS) [owasp.org ↗](https://owasp.org/www-community/attacks/xss/)
 - Sql Injection (SQLI) [owasp.org ↗](https://owasp.org/www-community/attacks/SQL_Injection)
 - Local File Inclusion (LFI) [owasp.org ↗](https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_Local_File_Inclusion)
+- Regex checks
+  - Log4J [cve.mitre.org ↗](https://cve.mitre.org/cgi-bin/cvename.cgi?name=cve-2021-44228)
 
 <!--
 

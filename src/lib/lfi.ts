@@ -12,7 +12,7 @@ const commonInclusions = [
     './'
 ];
 
-export default function (value) {
+export default function (value: string): boolean {
 
     if (value === null || value === undefined) {
         return false;

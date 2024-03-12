@@ -1,7 +1,7 @@
 // http://www.symantec.com/connect/articles/detection-sql-injection-and-cross-site-scripting-attacks
 // https://owasp.org/www-community/attacks/SQL_Injection
 
-export default function (value) {
+export default function (value: string): boolean {
 
     if (value === null || value === undefined) {
         return false;

@@ -5,5 +5,10 @@ export interface Config {
     "verbose": boolean,
     "verbose:emoji": boolean,
     "sqlite": string,
-    "hidden": boolean
+    "hidden": boolean,
+    "regex": {
+        "name": string,
+        "regex": string,
+        "description": string
+    }[]
 }
