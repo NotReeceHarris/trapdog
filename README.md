@@ -59,7 +59,13 @@ app.listen(port, () => {
     "verbose": boolean,       // Default: false
     "verbose:emoji": boolean, // Default: true
     "sqlite": string,         // Default: ":memory:"
-    "hidden": boolean         // Default: false
+    "hidden": boolean,        // Default: false
+    "regex": {                // Default: found in /src/constants.ts#L17
+        "name": string,
+        "regex": string,
+        "flag": string,
+        "description": string
+    }[]
 }
 ```
 
