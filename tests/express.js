@@ -1,5 +1,5 @@
 const express = require('express');
-const trapdog = require('../dist/index');
+const trapdog = require('trapdog');
 
 const app = express();
 const port = 3001;

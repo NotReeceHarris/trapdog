@@ -57,7 +57,7 @@ export default (config: Config) => {
 
     config.regex = [
         ...regex,
-        ...config.regex
+        ...config.regex || []
     ]
 
     const db = initDatabase(config);
