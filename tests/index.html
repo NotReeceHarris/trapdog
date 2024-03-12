@@ -1,29 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Trapdog test</title>
+        <style>button {padding: 5px 10px;cursor: pointer;font-size: 15px;}body {display: flex;gap: 8px;}</style>
     </head>
-
-    <style>
-        button {
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-    </style>
-
     <body>
-        <button id="json">Send JSON</button>
-        <button id="xss">Send XSS</button>
-        <button id="sqli-url">Send SQLI url</button>
-        <button id="sqli-body">Send SQLI body</button>
-        <button id="lfi-url">Send LFI url</button>
-        <button id="lfi-body">Send LFI body</button>
-        <button id="log4j">Send LOG4J</button>
+        <button id="json">JSON</button>
+        <button id="xss-url">XSS (url)</button>
+        <button id="xss-body">XSS (body)</button>
+        <button id="sqli-url">SQLI (url)</button>
+        <button id="sqli-body">SQLI (body)</button>
+        <button id="lfi">LFI</button>
+        <button id="log4j">LOG4J</button>
     </body>
-
     <script>
         document.getElementById('json').addEventListener('click', function() {
             var xhr = new XMLHttpRequest();
@@ -32,11 +23,18 @@
             xhr.send(JSON.stringify({json: "Hello, world!"}));
         });
 
-        document.getElementById('xss').addEventListener('click', function() {
+        document.getElementById('xss-url').addEventListener('click', function() {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({xss: "<script>alert(\"XSS\")<\/script>"}));
+        });
+
+        document.getElementById('xss-body').addEventListener('click', function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({message: "<script>alert(\"XSS\")<\/script>"}));
         });
 
         document.getElementById('sqli-url').addEventListener('click', function() {
@@ -52,17 +50,10 @@
             xhr.send(JSON.stringify({sqli: "test\"-- SELECT * FROM users"}));
         });
 
-        document.getElementById('lfi-url').addEventListener('click', function() {
+        document.getElementById('lfi').addEventListener('click', function() {
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '/?file=../../../../../../../../etc/passwd', true);
             xhr.send();
-        });
-
-        document.getElementById('lfi-body').addEventListener('click', function() {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({lfi: "../../../../../../../../etc/passwd"}));
         });
 
         document.getElementById('log4j').addEventListener('click', function() {
@@ -71,5 +62,4 @@
             xhr.send();
         });
     </script>
-
 </html>
