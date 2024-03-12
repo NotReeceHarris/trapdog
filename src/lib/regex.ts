@@ -17,7 +17,7 @@ export default function (value: string, config: Config): {
     for (let i = 0; i < checks.length; i++) {
         const check = checks[i];
 
-        if (value.match(new RegExp(check.regex)).length > 0) {
+        if (value.match(new RegExp(check.regex))) {
             return {
                 "pass": false,
                 "check": check.name

@@ -14,8 +14,10 @@
     "url": "git+https://github.com/NotReeceHarris/trapdog.git"
   },
   "dependencies": {
+    "@types/node-fetch": "^2.6.11",
     "semver": "^7.6.0",
     "sqlite3": "^5.1.7",
+    "uuid": "^9.0.1",
     "xss-attack-detection": "^1.0.4"
   },
   "files": [

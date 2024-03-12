@@ -1,7 +1,7 @@
-import fetch from 'node-fetch';
 import semver from 'semver';
 import console = require('console');
 const sqlite3 = require('sqlite3').verbose();
+import { v4 } from 'uuid';
 
 import { version } from '../package.json';
 import { Config } from './types';
@@ -14,7 +14,7 @@ import regexDetection from './lib/regex';
 
 const getLatestVersion = async () => {
     const response = await fetch('https://registry.npmjs.org/trapdog/latest');
-    const data = await response.json();
+    const data = await response.json() as { version: string };
     return data.version;
 }
 
@@ -38,6 +38,17 @@ const initDatabase = (config) => {
         db.run('CREATE TABLE IF NOT EXISTS attacks (id INTEGER PRIMARY KEY, attack TEXT, ip TEXT, datetime TEXT)');
     });
     return db;
+}
+
+const handleAttack = (res, attack, ip, id, config, logger, log) => {
+
+    logger.logAttack(attack, ip)
+    log(`${attack} attack detected : ${id}`, emojis.poop);
+
+    if (config.block) {
+        if (!config.hidden) res.setHeader('blocked-by', 'trapdog');
+        return res.status(403).send('Forbidden');
+    }
 }
 
 let bodyparserDetected = true;
@@ -86,6 +97,7 @@ export default (config: Config) => {
             return next();
         }
 
+        const requestId = v4();
         const url = req.originalUrl;
         const ip = req.ip || req.connection.remoteAddress;
 
@@ -98,13 +110,7 @@ export default (config: Config) => {
             for (let i = 0; i < xss_classified.length; i++) {
                 const classification = xss_classified[i];
                 if (classification.gist === 'malicious' && classification.confidenceFactor >= config.xss_confidence) {
-                    logger.logAttack('xss', ip)
-                    log('XSS attack detected', emojis.poop);
-
-                    if (config.block) {
-                        if (!config.hidden) res.setHeader('blocked-by', 'trapdog');
-                        return res.status(403).send('Forbidden');
-                    }
+                    return handleAttack(res, 'xss', ip, requestId, config, logger, log);
                 }
             }
         }
@@ -113,26 +119,14 @@ export default (config: Config) => {
         const sqliUrlDetected = sqliDetection(url);
         const sqliBodyDetected = body.some(arg => sqliDetection(arg.toString()));
         if (sqliUrlDetected || sqliBodyDetected) {
-            logger.logAttack('sqli', ip)
-            log('SQLi attack detected', emojis.poop);
-
-            if (config.block) {
-                if (!config.hidden) res.setHeader('blocked-by', 'trapdog');
-                return res.status(403).send('Forbidden');
-            }
+            return handleAttack(res, 'sqli', ip, requestId, config, logger, log);
         }
 
         // LFI detection
         const lfiUrlDetected = lfiDetection(url);
         const lfiBodyDetected = body.some(arg => lfiDetection(arg.toString()));
         if (lfiUrlDetected || lfiBodyDetected) {
-            logger.logAttack('lfi', ip)
-            log('LFI attack detected', emojis.poop);
-
-            if (config.block) {
-                if (!config.hidden) res.setHeader('blocked-by', 'trapdog');
-                return res.status(403).send('Forbidden');
-            }
+            return handleAttack(res, 'lfi', ip, requestId, config, logger, log);
         }
 
         // Regex detection
@@ -142,13 +136,7 @@ export default (config: Config) => {
             const regex = regexUrlDetected.pass ? regexUrlDetected : regexBodyDetected;
 
             if (!regex.pass) {
-                logger.logAttack(regex.check, ip)
-                log(`${regex.check} attack detected`, emojis.poop);
-
-                if (config.block) {
-                    if (!config.hidden) res.setHeader('blocked-by', 'trapdog');
-                    return res.status(403).send('Forbidden');
-                }
+                return handleAttack(res, regex.check, ip, requestId, config, logger, log);
             }
         }
 
